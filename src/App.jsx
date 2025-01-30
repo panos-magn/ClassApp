@@ -1,64 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Question from "./Question";
-import ProgressBar from "./ProgressBar";
+import NavBar from "./NavBar";
+import Home from "./Home";
+import Education from "./Education";
+import Questions from "./Questions";
 import Modal from "./Modal";
 import LoadingPage from "./LoadingPage";
+import questionsSet1 from "./questionsSet1";
+import questionsSet2 from "./questionsSet2";
 
-const questions = [
-  {
-    questionText: "What is the capital of France?",
-    answerOptions: [
-      { answerText: "New York", isCorrect: false },
-      { answerText: "London", isCorrect: false },
-      { answerText: "Paris", isCorrect: true },
-      { answerText: "Dublin", isCorrect: false },
-    ],
-    hint: "It's known as the city of love.",
-  },
-  {
-    questionText: "Who is CEO of Tesla?",
-    answerOptions: [
-      { answerText: "Jeff Bezos", isCorrect: false },
-      { answerText: "Elon Musk", isCorrect: true },
-      { answerText: "Bill Gates", isCorrect: false },
-      { answerText: "Tony Stark", isCorrect: false },
-    ],
-    hint: "He is also the founder of SpaceX.",
-  },
-  {
-    questionText: "The iPhone was created by which company?",
-    answerOptions: [
-      { answerText: "Apple", isCorrect: true },
-      { answerText: "Intel", isCorrect: false },
-      { answerText: "Amazon", isCorrect: false },
-      { answerText: "Microsoft", isCorrect: false },
-    ],
-    hint: "Think of a fruit.",
-  },
-  {
-    questionText: "How many Harry Potter books are there?",
-    answerOptions: [
-      { answerText: "1", isCorrect: false },
-      { answerText: "4", isCorrect: false },
-      { answerText: "6", isCorrect: false },
-      { answerText: "7", isCorrect: true },
-    ],
-    hint: "It's more than 6 but less than 8.",
-  },
-];
+const allQuestions = [...questionsSet1, ...questionsSet2];
+
+function shuffleArray(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
 
 function App() {
-  const [hints, setHints] = useState(Array(questions.length).fill(false));
+  const [questions, setQuestions] = useState([]);
+  const [hints, setHints] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
-  const [lockedQuestions, setLockedQuestions] = useState(
-    Array(questions.length).fill(false)
-  );
+  const [lockedQuestions, setLockedQuestions] = useState([]);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [studentName, setStudentName] = useState("");
+
+  useEffect(() => {
+    const shuffledQuestions = shuffleArray(allQuestions);
+    setQuestions(shuffledQuestions);
+    setHints(Array(shuffledQuestions.length).fill(false));
+    setLockedQuestions(Array(shuffledQuestions.length).fill(false));
+  }, []);
 
   const handleAnswerClick = (isCorrect, index) => {
     if (!isCorrect) {
@@ -88,9 +62,11 @@ function App() {
   };
 
   const handleRedoTest = () => {
-    setHints(Array(questions.length).fill(false));
+    const shuffledQuestions = shuffleArray(allQuestions);
+    setQuestions(shuffledQuestions);
+    setHints(Array(shuffledQuestions.length).fill(false));
     setAnsweredQuestions(0);
-    setLockedQuestions(Array(questions.length).fill(false));
+    setLockedQuestions(Array(shuffledQuestions.length).fill(false));
     setIsTestCompleted(false);
   };
 
@@ -106,30 +82,36 @@ function App() {
   const progressPercentage = (answeredQuestions / questions.length) * 100;
 
   return (
-    <div className="app">
-      {isLoading ? (
-        <LoadingPage onSubmit={handleStartTest} />
-      ) : isTestCompleted ? (
-        <div className="congratulations-section">
-          <h1>Congratulations, {studentName}!</h1>
-          <button onClick={handleRedoTest}>Redo the Test</button>
-        </div>
-      ) : (
-        <>
-          {questions.map((question, index) => (
-            <Question
-              key={index}
-              question={question}
-              index={index}
-              handleAnswerClick={handleAnswerClick}
-              locked={lockedQuestions[index]}
-            />
-          ))}
-          <ProgressBar progress={progressPercentage} />
-        </>
-      )}
-      {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
-    </div>
+    <Router>
+      <div className="app">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/education" element={<Education />} />
+          <Route
+            path="/questions"
+            element={
+              isLoading ? (
+                <LoadingPage onSubmit={handleStartTest} />
+              ) : isTestCompleted ? (
+                <div className="congratulations-section">
+                  <h1>Congratulations, {studentName}!</h1>
+                  <button onClick={handleRedoTest}>Redo the Test</button>
+                </div>
+              ) : (
+                <Questions
+                  questions={questions}
+                  handleAnswerClick={handleAnswerClick}
+                  lockedQuestions={lockedQuestions}
+                  progressPercentage={progressPercentage}
+                />
+              )
+            }
+          />
+        </Routes>
+        {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
+      </div>
+    </Router>
   );
 }
 

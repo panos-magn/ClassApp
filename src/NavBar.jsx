@@ -5,17 +5,19 @@ import "./NavBar.css";
 const NavBar = () => {
   return (
     <nav className="navbar">
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/education">Education</Link>
-        </li>
-        <li>
-          <Link to="/questions">Questions</Link>
-        </li>
-      </ul>
+      <table>
+        <ul>
+          <li>
+            <Link to="/">Αρχική</Link>
+          </li>
+          <li>
+            <Link to="/education">Εδώ διαβάζουμε</Link>
+          </li>
+          <li>
+            <Link to="/questions">Έλα να μαθουμε</Link>
+          </li>
+        </ul>
+      </table>
     </nav>
   );
 };

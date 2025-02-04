@@ -1,23 +1,21 @@
 const questionsSet1 = [
   {
-    questionText: "What is the capital of France?",
+    questionText: "1️⃣ Στη λέξη ξαναπαίζω, ποιο κομμάτι σημαίνει ξανά;",
     answerOptions: [
-      { answerText: "New York", isCorrect: false },
-      { answerText: "London", isCorrect: false },
-      { answerText: "Paris", isCorrect: true },
-      { answerText: "Dublin", isCorrect: false },
+      { answerText: "🍌 α) -παίζ-", isCorrect: false },
+      { answerText: "🍎 β) ξανα-", isCorrect: true },
+      { answerText: "🍒 γ) -ω", isCorrect: false },
     ],
-    hint: "It's known as the city of love.",
+    hint: "Δές το ξανα",
   },
   {
-    questionText: "Who is CEO of Tesla?",
+    questionText: "2️⃣ Ποια λέξη μοιάζει με τη λέξη αγάπη;",
     answerOptions: [
-      { answerText: "Jeff Bezos", isCorrect: false },
-      { answerText: "Elon Musk", isCorrect: true },
-      { answerText: "Bill Gates", isCorrect: false },
-      { answerText: "Tony Stark", isCorrect: false },
+      { answerText: "🐱 α) άγαλμα", isCorrect: false },
+      { answerText: "🐶 β) αγαπώ", isCorrect: true },
+      { answerText: "🐭 γ) αγκαλιά", isCorrect: false },
     ],
-    hint: "He is also the founder of SpaceX.",
+    hint: "Μπορείς να το βρείς",
   },
 ];
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Question = ({ question, index, handleAnswerClick, locked }) => (
-  <div className="question-section">
+  <div className="questions-section">
     <div className="question-count">
       <span>Question {index + 1}</span>/{question.length}
     </div>

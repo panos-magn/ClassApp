@@ -85,30 +85,32 @@ function App() {
     <Router>
       <div className="app">
         <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/education" element={<Education />} />
-          <Route
-            path="/questions"
-            element={
-              isLoading ? (
-                <LoadingPage onSubmit={handleStartTest} />
-              ) : isTestCompleted ? (
-                <div className="congratulations-section">
-                  <h1>Congratulations, {studentName}!</h1>
-                  <button onClick={handleRedoTest}>Redo the Test</button>
-                </div>
-              ) : (
-                <Questions
-                  questions={questions}
-                  handleAnswerClick={handleAnswerClick}
-                  lockedQuestions={lockedQuestions}
-                  progressPercentage={progressPercentage}
-                />
-              )
-            }
-          />
-        </Routes>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/education" element={<Education />} />
+            <Route
+              path="/questions"
+              element={
+                isLoading ? (
+                  <LoadingPage onSubmit={handleStartTest} />
+                ) : isTestCompleted ? (
+                  <div className="congratulations-section">
+                    <h1>Congratulations, {studentName}!</h1>
+                    <button onClick={handleRedoTest}>Redo the Test</button>
+                  </div>
+                ) : (
+                  <Questions
+                    questions={questions}
+                    handleAnswerClick={handleAnswerClick}
+                    lockedQuestions={lockedQuestions}
+                    progressPercentage={progressPercentage}
+                  />
+                )
+              }
+            />
+          </Routes>
+        </div>
         {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
       </div>
     </Router>
